@@ -19,7 +19,8 @@ type UserSummary struct {
 
 type UserGateway interface {
 	SaveUser(cmd CreateUserCMD) (*UserSummary, error)
-	Login()
+	Login(cmd LoginCMD) string
+	AddWishPokemon(userId, pokemonId, comment string) error
 }
 
 type UserService struct {
@@ -43,6 +44,21 @@ func (us *UserService) SaveUser(cmd CreateUserCMD) (*UserSummary, error) {
 	}, nil
 }
 
-func (us *UserService) Login() {
+func (us *UserService) Login(cmd LoginCMD) string {
+	var id string
+	err := us.QueryRow(GetLoginQuery(), cmd.Username, cmd.Password).Scan(&id)
 
+	if err != nil {
+		logs.Error(err.Error())
+		return ""
+	}
+	return id
+}
+
+func (us *UserService) AddWishPokemon(userID, pokemonID, comment string) error {
+	_, err := us.Exec(GetAddWishPokemonQuery(), userID, pokemonID, comment)
+	if err != nil {
+		return err
+	}
+	return nil
 }
