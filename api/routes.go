@@ -2,12 +2,12 @@ package api
 
 import (
 	"car-api/internal/middleware"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 )
 
 func SetupPokemonsRoutes(app *fiber.App, tokenKey string) {
 	s := start(tokenKey)
-	grp := app.Group("/pokemons", s.SearchPokemonHandler)
+	grp := app.Group("/pokemons")
 	grp.Get("/", s.SearchPokemonHandler)
 }
 

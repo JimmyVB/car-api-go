@@ -2,27 +2,24 @@ package api
 
 import (
 	"car-api/internal/middleware"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 )
 
-func (w *WebServices) CreateUserHandler(c *fiber.Ctx) {
+func (w *WebServices) CreateUserHandler(c *fiber.Ctx) error {
 	var cmd CreateUserCMD
 	err := c.BodyParser(&cmd)
 
 	res, err := w.Services.users.SaveUser(cmd)
 
 	if err != nil {
-		err = fiber.NewError(400, "cannot create user")
-		c.Next(err)
-		return
+		return fiber.NewError(400, "cannot create user")
 	}
 
 	res.JWT = middleware.SignToken(w.tokenKey, res.ID)
-	_ = c.JSON(res)
-
+	return c.JSON(res)
 }
 
-func (w *WebServices) WishListHandler(c *fiber.Ctx) {
+func (w *WebServices) WishListHandler(c *fiber.Ctx) error {
 
 	var cmd WishPokemonCMD
 	_ = c.BodyParser(&cmd)
@@ -32,35 +29,29 @@ func (w *WebServices) WishListHandler(c *fiber.Ctx) {
 	err := w.users.AddWishPokemon(userID, cmd.PokemonID, cmd.Comment)
 
 	if err != nil {
-		err = fiber.NewError(400, "cannot add to the wishlist")
-		c.Next(err)
-		return
+		return fiber.NewError(400, "cannot add to the wishlist")
 	}
 
-	_ = c.JSON(struct {
+	return c.JSON(struct {
 		Res string `json:"result"`
 	}{
 		Res: "pokemon added to the wishlist",
 	})
 }
 
-func (w *WebServices) LoginHandler(c *fiber.Ctx) {
+func (w *WebServices) LoginHandler(c *fiber.Ctx) error {
 	var cmd LoginCMD
 	err := c.BodyParser(&cmd)
 	if err != nil {
-		err = fiber.NewError(400, "cannot parse params")
-		c.Next(err)
-		return
+		return fiber.NewError(400, "cannot parse params")
 	}
 
 	id := w.users.Login(cmd)
 	if id == "" {
-		err = fiber.NewError(404, "user not found")
-		c.Next(err)
-		return
+		return fiber.NewError(404, "user not found")
 	}
 
-	_ = c.JSON(struct {
+	return c.JSON(struct {
 		Token string `json:"token"`
 	}{
 		Token: middleware.SignToken(w.tokenKey, id),

@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 )
 
-func (w *WebServices) SearchPokemonHandler(c *fiber.Ctx) {
+func (w *WebServices) SearchPokemonHandler(c *fiber.Ctx) error {
 
 	res, err := w.search.Search(PokemonFilter{
 		Name: c.Query("name"),
@@ -12,14 +12,12 @@ func (w *WebServices) SearchPokemonHandler(c *fiber.Ctx) {
 	})
 
 	if err != nil {
-		err = fiber.NewError(400, "cannot bring pokemons")
-		c.Next(err)
-		return
+		return fiber.NewError(400, "cannot bring pokemons")
 	}
 
 	if len(res) == 0 {
 		_ = c.JSON([]interface{}{})
 	}
 
-	c.JSON(res)
+	return c.JSON(res)
 }

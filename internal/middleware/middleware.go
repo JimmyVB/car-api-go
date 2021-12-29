@@ -3,12 +3,12 @@ package middleware
 import (
 	"car-api/internal/logs"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gofiber/fiber"
-	jwtware "github.com/gofiber/jwt"
+	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v2"
 	"time"
 )
 
-func JwtMiddleware(secret string) func(ctx *fiber.Ctx) {
+func JwtMiddleware(secret string) fiber.Handler {
 	return jwtware.New(jwtware.Config{
 		SigningKey: []byte(secret),
 	})
@@ -27,6 +27,7 @@ func SignToken(tokenKey, id string) string {
 	if err != nil {
 		return ""
 	}
+
 	return t
 }
 
@@ -34,7 +35,6 @@ func ExtractUserIDFromJWT(bearer, tokenKey string) string {
 
 	token := bearer[7:]
 	logs.Info(token)
-
 	t, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(tokenKey), nil
 	})
@@ -47,5 +47,6 @@ func ExtractUserIDFromJWT(bearer, tokenKey string) string {
 		claims := t.Claims.(jwt.MapClaims)
 		return claims["sub"].(string)
 	}
+
 	return ""
 }
