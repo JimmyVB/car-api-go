@@ -32,8 +32,9 @@ func main() {
 	})
 	key := "tokenKey"
 	app.Use(recover.New())
-	api.SetupPokemonsRoutes(app, key)
+	//api.SetupPokemonsRoutes(app, key)
 	api.SetupUsersRouters(app, key)
+	api.SetupCarRouters(app, key)
 	_ = app.Listen(":3001")
 }
 

@@ -1,17 +1,19 @@
 package api
 
-import "car-api/internal/database"
+import (
+	"car-api/internal/database"
+)
 
 type Services struct {
-	search PokemonSearch
-	users  UserGateway
+	users UserGateway
+	cars  CarGateway
 }
 
 func NewServices() Services {
 	client := database.NewPostgresClient()
 	return Services{
-		search: &PokemonService{client},
-		users:  &UserService{client},
+		users: &UserService{client},
+		cars:  &CarService{PostgresClient: client},
 	}
 }
 
@@ -20,6 +22,6 @@ type WebServices struct {
 	tokenKey string
 }
 
-func start(tokenKey string) *WebServices {
+func Start(tokenKey string) *WebServices {
 	return &WebServices{NewServices(), tokenKey}
 }
