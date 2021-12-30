@@ -1,0 +1,93 @@
+basePath: /api
+info:
+  contact:
+    email: jimmyvb16@gmail.com
+    name: Jimmy Valdez
+  description: This is a small CRUD in Fiber
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Car API
+  version: "1.0"
+paths:
+  /v1/cars/create:
+    post:
+      consumes:
+      - application/json
+      description: create a new car.
+      parameters:
+      - description: Title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create a new car
+      tags:
+      - Car
+  /v1/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new User.
+      parameters:
+      - description: Title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: create a new user
+      tags:
+      - Token
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Login for get access token.
+      parameters:
+      - description: Username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Login for get access token
+      tags:
+      - Token
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
