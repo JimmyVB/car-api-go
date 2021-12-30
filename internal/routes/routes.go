@@ -5,6 +5,7 @@ import (
 	"car-api/internal/service"
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/gofiber/fiber/v2"
 )
 
 // UsersRouters func for describe token routes.
@@ -25,12 +26,12 @@ func UsersRouters(app *fiber.App, tokenKey string) {
 func CarRouters(app *fiber.App, tokenKey string) {
 	s := service.Start(tokenKey)
 	route := app.Group("/api/v1/cars")
-	route.Use(middleware.JwtMiddleware(tokenKey)).Post("/create", s.CreateHandler)
 	route.Get("/all", s.GetAllHandler)
 	route.Get("/find/:id", s.GetOneHandler)
+
+	route.Use(middleware.JwtMiddleware(tokenKey)).Post("/create", s.CreateHandler)
 	route.Put("/update/:id", s.UpdateHandler)
 	//route.Delete("/delete", s.DeleteHandler)
-	route.Use(middleware.JwtMiddleware(tokenKey)).Get("/fin", s.CreateHandler)
 
 }
 

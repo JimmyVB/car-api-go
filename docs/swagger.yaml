@@ -1,4 +1,16 @@
 basePath: /api
+definitions:
+  service.carCMD:
+    properties:
+      id:
+        type: string
+      marca:
+        type: string
+      model:
+        type: string
+      price:
+        type: integer
+    type: object
 info:
   contact:
     email: jimmyvb16@gmail.com
@@ -11,15 +23,44 @@ info:
   title: Car API
   version: "1.0"
 paths:
+  /v1/cars/all:
+    get:
+      consumes:
+      - application/json
+      description: get all car.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/service.carCMD'
+            type: array
+      summary: get all car
+      tags:
+      - Car
   /v1/cars/create:
     post:
       consumes:
       - application/json
       description: create a new car.
       parameters:
-      - description: Title
+      - description: Marca
         in: body
-        name: title
+        name: marca
+        required: true
+        schema:
+          type: string
+      - description: Modelo
+        in: body
+        name: model
+        required: true
+        schema:
+          type: string
+      - description: Precio
+        in: body
+        name: price
         required: true
         schema:
           type: string
@@ -33,6 +74,63 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: create a new car
+      tags:
+      - Car
+  /v1/cars/find/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get one car.
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.carCMD'
+      summary: get one car
+      tags:
+      - Car
+  /v1/cars/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update one car.
+      parameters:
+      - description: Marca
+        in: body
+        name: marca
+        required: true
+        schema:
+          type: string
+      - description: Modelo
+        in: body
+        name: model
+        required: true
+        schema:
+          type: string
+      - description: Precio
+        in: body
+        name: price
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.carCMD'
+      security:
+      - ApiKeyAuth: []
+      summary: update one car
       tags:
       - Car
   /v1/create:

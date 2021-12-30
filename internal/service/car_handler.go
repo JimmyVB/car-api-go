@@ -12,7 +12,9 @@ import (
 // @Tags Car
 // @Accept json
 // @Produce json
-// @Param title body string true "Title"
+// @Param marca body string true "Marca"
+// @Param model body string true "Modelo"
+// @Param price body string true "Precio"
 // @Success 200 {string} status "ok"
 // @Security ApiKeyAuth
 // @Router /v1/cars/create [post]
@@ -33,6 +35,14 @@ func (w *WebServices) CreateHandler(c *fiber.Ctx) error {
 	})
 }
 
+// GetAllHandler method for get all car.
+// @Description get all car.
+// @Summary get all car
+// @Tags Car
+// @Accept json
+// @Produce json
+// @Success 200 {array} carCMD
+// @Router /v1/cars/all [get]
 func (w *WebServices) GetAllHandler(c *fiber.Ctx) error {
 
 	var cmd carCMD
@@ -51,6 +61,15 @@ func (w *WebServices) GetAllHandler(c *fiber.Ctx) error {
 	})
 }
 
+// GetOneHandler method for get one car.
+// @Description get one car.
+// @Summary get one car
+// @Tags Car
+// @Accept json
+// @Produce json
+// @Param id path string true "Car ID"
+// @Success 200 {object} carCMD
+// @Router /v1/cars/find/{id} [get]
 func (w *WebServices) GetOneHandler(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
@@ -72,6 +91,18 @@ func (w *WebServices) GetOneHandler(c *fiber.Ctx) error {
 	})
 }
 
+// UpdateHandler method for update one car.
+// @Description update one car.
+// @Summary update one car
+// @Tags Car
+// @Accept json
+// @Produce json
+// @Param marca body string true "Marca"
+// @Param model body string true "Modelo"
+// @Param price body integer true "Precio"
+// @Success 200 {object} carCMD
+// @Security ApiKeyAuth
+// @Router /v1/cars/update/{id} [put]
 func (w *WebServices) UpdateHandler(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
