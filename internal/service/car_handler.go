@@ -12,9 +12,7 @@ import (
 // @Tags Car
 // @Accept json
 // @Produce json
-// @Param marca body string true "Marca"
-// @Param model body string true "Modelo"
-// @Param price body string true "Precio"
+// @Param request body carCMD true "Create Car Data"
 // @Success 200 {string} status "ok"
 // @Security ApiKeyAuth
 // @Router /v1/cars/create [post]
@@ -97,9 +95,7 @@ func (w *WebServices) GetOneHandler(c *fiber.Ctx) error {
 // @Tags Car
 // @Accept json
 // @Produce json
-// @Param marca body string true "Marca"
-// @Param model body string true "Modelo"
-// @Param price body integer true "Precio"
+// @Param request body CreateCarCMD true "Update Car Data"
 // @Success 200 {object} carCMD
 // @Security ApiKeyAuth
 // @Router /v1/cars/update/{id} [put]

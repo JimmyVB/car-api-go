@@ -1,5 +1,30 @@
 basePath: /api
 definitions:
+  service.CreateCarCMD:
+    properties:
+      id:
+        type: string
+      marca:
+        type: string
+      model:
+        type: string
+      price:
+        type: integer
+    type: object
+  service.CreateUserCMD:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  service.LoginCMD:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   service.carCMD:
     properties:
       id:
@@ -46,24 +71,12 @@ paths:
       - application/json
       description: create a new car.
       parameters:
-      - description: Marca
+      - description: Create Car Data
         in: body
-        name: marca
+        name: request
         required: true
         schema:
-          type: string
-      - description: Modelo
-        in: body
-        name: model
-        required: true
-        schema:
-          type: string
-      - description: Precio
-        in: body
-        name: price
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/service.carCMD'
       produces:
       - application/json
       responses:
@@ -103,24 +116,12 @@ paths:
       - application/json
       description: update one car.
       parameters:
-      - description: Marca
+      - description: Update Car Data
         in: body
-        name: marca
+        name: request
         required: true
         schema:
-          type: string
-      - description: Modelo
-        in: body
-        name: model
-        required: true
-        schema:
-          type: string
-      - description: Precio
-        in: body
-        name: price
-        required: true
-        schema:
-          type: integer
+          $ref: '#/definitions/service.CreateCarCMD'
       produces:
       - application/json
       responses:
@@ -139,12 +140,12 @@ paths:
       - application/json
       description: Create a new User.
       parameters:
-      - description: Title
+      - description: Create User Data
         in: body
-        name: title
+        name: request
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/service.CreateUserCMD'
       produces:
       - application/json
       responses:
@@ -161,18 +162,12 @@ paths:
       - application/json
       description: Login for get access token.
       parameters:
-      - description: Username
+      - description: User Data
         in: body
-        name: username
+        name: request
         required: true
         schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/service.LoginCMD'
       produces:
       - application/json
       responses:

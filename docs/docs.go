@@ -77,30 +77,12 @@ var doc = `{
                 "summary": "create a new car",
                 "parameters": [
                     {
-                        "description": "Marca",
-                        "name": "marca",
+                        "description": "Create Car Data",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Modelo",
-                        "name": "model",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Precio",
-                        "name": "price",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/service.carCMD"
                         }
                     }
                 ],
@@ -166,30 +148,12 @@ var doc = `{
                 "summary": "update one car",
                 "parameters": [
                     {
-                        "description": "Marca",
-                        "name": "marca",
+                        "description": "Update Car Data",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Modelo",
-                        "name": "model",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Precio",
-                        "name": "price",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/service.CreateCarCMD"
                         }
                     }
                 ],
@@ -218,12 +182,12 @@ var doc = `{
                 "summary": "create a new user",
                 "parameters": [
                     {
-                        "description": "Title",
-                        "name": "title",
+                        "description": "Create User Data",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/service.CreateUserCMD"
                         }
                     }
                 ],
@@ -252,21 +216,12 @@ var doc = `{
                 "summary": "Login for get access token",
                 "parameters": [
                     {
-                        "description": "Username",
-                        "name": "username",
+                        "description": "User Data",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Password",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/service.LoginCMD"
                         }
                     }
                 ],
@@ -282,6 +237,45 @@ var doc = `{
         }
     },
     "definitions": {
+        "service.CreateCarCMD": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "marca": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.CreateUserCMD": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.LoginCMD": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "service.carCMD": {
             "type": "object",
             "properties": {

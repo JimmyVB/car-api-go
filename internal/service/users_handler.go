@@ -11,7 +11,7 @@ import (
 // @Tags Token
 // @Accept json
 // @Produce json
-// @Param title body string true "Title"
+// @Param request body CreateUserCMD true "Create User Data"
 // @Success 200 {string} status "ok"
 // @Router /v1/create [post]
 func (w *WebServices) CreateUserHandler(c *fiber.Ctx) error {
@@ -34,8 +34,7 @@ func (w *WebServices) CreateUserHandler(c *fiber.Ctx) error {
 // @Tags Token
 // @Accept json
 // @Produce json
-// @Param username body string true "Username"
-// @Param password body string true "Password"
+// @Param request body LoginCMD true "User Data"
 // @Success 200 {string} status "ok"
 // @Router /v1/login [post]
 func (w *WebServices) LoginHandler(c *fiber.Ctx) error {
