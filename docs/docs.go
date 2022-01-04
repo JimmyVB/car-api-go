@@ -148,6 +148,13 @@ var doc = `{
                 "summary": "update one car",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Car ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Update Car Data",
                         "name": "request",
                         "in": "body",

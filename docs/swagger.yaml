@@ -116,6 +116,11 @@ paths:
       - application/json
       description: update one car.
       parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Update Car Data
         in: body
         name: request

@@ -95,6 +95,7 @@ func (w *WebServices) GetOneHandler(c *fiber.Ctx) error {
 // @Tags Car
 // @Accept json
 // @Produce json
+// @Param id path string true "Car ID"
 // @Param request body CreateCarCMD true "Update Car Data"
 // @Success 200 {object} carCMD
 // @Security ApiKeyAuth
@@ -114,16 +115,15 @@ func (w *WebServices) UpdateHandler(c *fiber.Ctx) error {
 		return fiber.NewError(400, "cannot body parser")
 	}
 
-	car, err := w.cars.Update(id, cmd)
+	_, err = w.cars.Update(id, cmd)
 
 	if err != nil {
-		return fiber.NewError(400, "cannot get all car")
+		return fiber.NewError(400, "cannot update a car")
 	}
 
 	return c.JSON(fiber.Map{
 		"error": false,
-		"msg":   "Get one car",
-		"car":   car,
+		"msg":   "A car was updated",
 	})
 }
 
