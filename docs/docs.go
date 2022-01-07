@@ -50,7 +50,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/service.carCMD"
+                                "$ref": "#/definitions/domain.Car"
                             }
                         }
                     }
@@ -82,8 +82,45 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/service.carCMD"
+                            "$ref": "#/definitions/domain.Car"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cars/delete/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "delete one car.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Car"
+                ],
+                "summary": "delete one car",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Car ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -122,7 +159,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/service.carCMD"
+                            "$ref": "#/definitions/domain.Car"
                         }
                     }
                 }
@@ -160,41 +197,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/service.CreateCarCMD"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/service.carCMD"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/create": {
-            "post": {
-                "description": "Create a new User.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Token"
-                ],
-                "summary": "create a new user",
-                "parameters": [
-                    {
-                        "description": "Create User Data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/service.CreateUserCMD"
+                            "$ref": "#/definitions/domain.Car"
                         }
                     }
                 ],
@@ -228,7 +231,41 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/service.LoginCMD"
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/register": {
+            "post": {
+                "description": "Create a new User.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Token"
+                ],
+                "summary": "create a new user",
+                "parameters": [
+                    {
+                        "description": "Create User Data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.User"
                         }
                     }
                 ],
@@ -244,7 +281,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "service.CreateCarCMD": {
+        "domain.Car": {
             "type": "object",
             "properties": {
                 "id": {
@@ -261,7 +298,7 @@ var doc = `{
                 }
             }
         },
-        "service.CreateUserCMD": {
+        "domain.User": {
             "type": "object",
             "properties": {
                 "password": {
@@ -269,34 +306,6 @@ var doc = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "service.LoginCMD": {
-            "type": "object",
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "service.carCMD": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "marca": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "integer"
                 }
             }
         }

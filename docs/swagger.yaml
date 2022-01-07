@@ -1,6 +1,6 @@
 basePath: /api
 definitions:
-  service.CreateCarCMD:
+  domain.Car:
     properties:
       id:
         type: string
@@ -11,30 +11,12 @@ definitions:
       price:
         type: integer
     type: object
-  service.CreateUserCMD:
+  domain.User:
     properties:
       password:
         type: string
       username:
         type: string
-    type: object
-  service.LoginCMD:
-    properties:
-      password:
-        type: string
-      username:
-        type: string
-    type: object
-  service.carCMD:
-    properties:
-      id:
-        type: string
-      marca:
-        type: string
-      model:
-        type: string
-      price:
-        type: integer
     type: object
 info:
   contact:
@@ -60,7 +42,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/service.carCMD'
+              $ref: '#/definitions/domain.Car'
             type: array
       summary: get all car
       tags:
@@ -76,7 +58,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/service.carCMD'
+          $ref: '#/definitions/domain.Car'
       produces:
       - application/json
       responses:
@@ -87,6 +69,29 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: create a new car
+      tags:
+      - Car
+  /v1/cars/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete one car.
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: delete one car
       tags:
       - Car
   /v1/cars/find/{id}:
@@ -106,7 +111,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/service.carCMD'
+            $ref: '#/definitions/domain.Car'
       summary: get one car
       tags:
       - Car
@@ -126,31 +131,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/service.CreateCarCMD'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.carCMD'
-      security:
-      - ApiKeyAuth: []
-      summary: update one car
-      tags:
-      - Car
-  /v1/create:
-    post:
-      consumes:
-      - application/json
-      description: Create a new User.
-      parameters:
-      - description: Create User Data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/service.CreateUserCMD'
+          $ref: '#/definitions/domain.Car'
       produces:
       - application/json
       responses:
@@ -158,9 +139,11 @@ paths:
           description: ok
           schema:
             type: string
-      summary: create a new user
+      security:
+      - ApiKeyAuth: []
+      summary: update one car
       tags:
-      - Token
+      - Car
   /v1/login:
     post:
       consumes:
@@ -172,7 +155,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/service.LoginCMD'
+          $ref: '#/definitions/domain.User'
       produces:
       - application/json
       responses:
@@ -181,6 +164,28 @@ paths:
           schema:
             type: string
       summary: Login for get access token
+      tags:
+      - Token
+  /v1/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new User.
+      parameters:
+      - description: Create User Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: create a new user
       tags:
       - Token
 securityDefinitions:
