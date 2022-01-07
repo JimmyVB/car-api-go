@@ -5,6 +5,7 @@ import (
 	"car-api/internal/middleware"
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	recover2 "github.com/gofiber/fiber/v2/middleware/recover"
 	"log"
 )
@@ -25,7 +26,7 @@ func (s *Server) Initialize() {
 	app := fiber.New()
 
 	app.Use(recover2.New())
-
+	app.Use(cors.New())
 	routes := app.Group("/swagger")
 	routes.Get("*", swagger.Handler)
 

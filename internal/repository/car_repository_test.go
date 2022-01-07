@@ -18,8 +18,8 @@ func Test_CourseRepository_Save_Succeed(t *testing.T) {
 	require.NoError(t, err)
 
 	sqlMock.ExpectExec(
-		"insert into cars (id, marca, model, price) values ($1, $2, $3, $4)").
-		WithArgs(id, mark, model, price).WillReturnResult(sqlmock.NewResult(0, 1))
+		"insert into cars (marca, model, price) values ($1, $2, $3)").
+		WithArgs(mark, model, price).WillReturnResult(sqlmock.NewResult(0, 1))
 
 	repo := NewCarRepository(db)
 	err = repo.Save(car)
@@ -38,8 +38,8 @@ func Test_CourseRepository_Save_Error(t *testing.T) {
 	require.NoError(t, err)
 
 	sqlMock.ExpectExec(
-		"insert into cars (id, marca, model, price) values ($1, $2, $3, $4)").
-		WithArgs(id, mark, model, price).WillReturnError(err)
+		"insert into cars (marca, model, price) values ($1, $2, $3)").
+		WithArgs(mark, model, price).WillReturnError(err)
 
 	repo := NewCarRepository(db)
 	err = repo.Save(car)

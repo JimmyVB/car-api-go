@@ -14,12 +14,13 @@ func JwtMiddleware(tokenKey string) fiber.Handler {
 	})
 }
 
-func SignToken(tokenKey, id string) string {
+func SignToken(tokenKey, username string) string {
 
 	// Create the Claims
 	claims := jwt.MapClaims{
 		"admin": true,
 		"exp":   time.Now().Add(time.Hour * 72).Unix(),
+		"sub":   username,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString([]byte("secret"))

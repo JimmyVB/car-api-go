@@ -20,7 +20,8 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 
 func (u *UserRepository) Login(user user.User) string {
 	var id string
-	err := u.db.QueryRow(queries.GetLoginQuery(), user.Username, user.Password).Scan(&id)
+	var newUser userResponse.UserResponse
+	err := u.db.QueryRow(queries.GetLoginQuery(), user.Username, user.Password).Scan(&newUser.ID, &newUser.Username)
 
 	if err != nil {
 		logs.Error(err.Error())
