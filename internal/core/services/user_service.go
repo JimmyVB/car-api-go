@@ -18,12 +18,12 @@ func NewUserService(repository ports.IUserRepository) *UserService {
 	}
 }
 
-func (s *UserService) Login(user user.User) string {
-	err := s.userRepository.Login(user)
-	if err == "" {
-		return ""
+func (s *UserService) Login(user user.User) (*user.UserResponse, error) {
+	res, err := s.userRepository.Login(user)
+	if err != nil {
+		return nil, err
 	}
-	return err
+	return res, nil
 }
 
 func (s *UserService) SaveUser(user user.User) (*user.UserResponse, error) {

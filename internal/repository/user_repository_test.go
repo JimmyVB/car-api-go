@@ -23,10 +23,10 @@ func TestUserRepository_Login_Succeed(t *testing.T) {
 		WithArgs(user.Username, user.Password).WillReturnRows(userMockRows)
 
 	repo := NewUserRepository(db)
-	id := repo.Login(user)
+	res, err := repo.Login(user)
 
 	assert.NoError(t, sqlMock.ExpectationsWereMet())
-	assert.NotEmpty(t, id)
+	assert.NotEmpty(t, res)
 }
 
 func TestUserRepository_Login_Error(t *testing.T) {
@@ -41,10 +41,10 @@ func TestUserRepository_Login_Error(t *testing.T) {
 		WithArgs(user.Username, user.Password).WillReturnError(err)
 
 	repo := NewUserRepository(db)
-	id := repo.Login(user)
+	res, err := repo.Login(user)
 
 	assert.NoError(t, sqlMock.ExpectationsWereMet())
-	assert.Empty(t, id)
+	assert.Empty(t, res)
 }
 
 func TestUserRepository_SaveUser_Succeed(t *testing.T) {

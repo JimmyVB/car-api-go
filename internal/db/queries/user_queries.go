@@ -5,5 +5,7 @@ func CreateUserQuery() string {
 }
 
 func GetLoginQuery() string {
-	return "select id, username from users where username = $1 and password = $2"
+	return "select u.id, u.username, ro.nombre from users u " +
+		"inner join usuarios_roles ur on u.id = ur.usuario_id " +
+		"inner join roles ro on ro.id = ur.role_id where u.username = $1 and u.password = $2"
 }

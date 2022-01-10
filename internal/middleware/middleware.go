@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	user "car-api/internal/core/domain"
 	"car-api/internal/logs"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
@@ -14,13 +15,15 @@ func JwtMiddleware(tokenKey string) fiber.Handler {
 	})
 }
 
-func SignToken(tokenKey, username string) string {
+func SignToken(tokenKey string, user *user.UserResponse) string {
 
 	// Create the Claims
 	claims := jwt.MapClaims{
-		"admin": true,
-		"exp":   time.Now().Add(time.Hour * 72).Unix(),
-		"sub":   username,
+		"admin":    true,
+		"exp":      time.Now().Add(time.Minute * 30).Unix(),
+		"username": user.Username,
+		"id":       user.ID,
+		"role":     user.Role,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString([]byte("secret"))

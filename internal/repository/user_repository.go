@@ -18,16 +18,20 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 }
 
-func (u *UserRepository) Login(user user.User) string {
-	var id string
+func (u *UserRepository) Login(user user.User) (*userResponse.UserResponse, error) {
 	var newUser userResponse.UserResponse
-	err := u.db.QueryRow(queries.GetLoginQuery(), user.Username, user.Password).Scan(&newUser.ID, &newUser.Username)
+	err := u.db.QueryRow(queries.GetLoginQuery(), user.Username, user.Password).
+		Scan(&newUser.ID, &newUser.Username, &newUser.Role)
 
 	if err != nil {
 		logs.Error(err.Error())
-		return ""
+		return nil, err
 	}
-	return id
+	return &userResponse.UserResponse{
+		ID:       newUser.ID,
+		Username: newUser.Username,
+		Role:     newUser.Role,
+	}, nil
 }
 
 func (u *UserRepository) SaveUser(user user.User) (*userResponse.UserResponse, error) {

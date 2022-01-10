@@ -38,12 +38,12 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 		return fiber.NewError(400, "cannot parse params")
 	}
 
-	id := h.userService.Login(user)
-	if id == "" {
+	newUser, err := h.userService.Login(user)
+	if err != nil {
 		return fiber.NewError(404, "user not found")
 	}
 
-	token := middleware.SignToken(h.tokenKey, id)
+	token := middleware.SignToken(h.tokenKey, newUser)
 
 	return c.JSON(fiber.Map{
 		"error":        false,
@@ -73,7 +73,7 @@ func (h *UserHandler) SaveUser(c *fiber.Ctx) error {
 		return fiber.NewError(400, "cannot create user")
 	}
 
-	res.JWT = middleware.SignToken(h.tokenKey, res.ID)
+	res.JWT = middleware.SignToken(h.tokenKey, res)
 
 	return c.JSON(res)
 }

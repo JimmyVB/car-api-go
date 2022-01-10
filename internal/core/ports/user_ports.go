@@ -7,12 +7,12 @@ import (
 
 type IUserService interface {
 	SaveUser(user user.User) (*user.UserResponse, error)
-	Login(user user.User) string
+	Login(user user.User) (*user.UserResponse, error)
 }
 
 type IUserRepository interface {
 	SaveUser(user user.User) (*user.UserResponse, error)
-	Login(user user.User) string
+	Login(user user.User) (*user.UserResponse, error)
 }
 
 type IUserHandler interface {
