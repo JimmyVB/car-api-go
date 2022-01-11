@@ -32,7 +32,7 @@ func main() {
 
 	var cfg config
 	err := envconfig.Process("CAR", &cfg)
-	postgresUri := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+	postgresUri := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=require",
 		cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName)
 
 	db, err := sql.Open("postgres", postgresUri)
