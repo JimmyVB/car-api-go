@@ -60,10 +60,10 @@ func main() {
 type config struct {
 
 	// Database configuration
-	DbUser    string        `default:"admin"`
-	DbPass    string        `default:"admin"`
-	DbHost    string        `default:"localhost"`
+	DbUser    string        `default:"xzmbprjsejsazz"`
+	DbPass    string        `default:"1b2e39d2b1b6d7098cf2a756a4706276817729749cde329086b2772ee1f9d74a"`
+	DbHost    string        `default:"ec2-3-224-157-224.compute-1.amazonaws.com"`
 	DbPort    string        `default:"5432"`
-	DbName    string        `default:"crudgo"`
+	DbName    string        `default:"dbiqfdis1j5q6g"`
 	DbTimeout time.Duration `default:"5s"`
 }
