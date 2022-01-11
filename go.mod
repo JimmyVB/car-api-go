@@ -1,6 +1,6 @@
 module car-api
 
-// +heroku goVersion go1.13
+// +heroku goVersion go1.15
 go 1.17
 
 require (
