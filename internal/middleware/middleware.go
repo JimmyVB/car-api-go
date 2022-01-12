@@ -2,17 +2,46 @@ package middleware
 
 import (
 	user "car-api/internal/core/domain"
-	"car-api/internal/logs"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
-	jwtware "github.com/gofiber/jwt/v3"
+	"strings"
 	"time"
 )
 
-func JwtMiddleware(tokenKey string) fiber.Handler {
-	return jwtware.New(jwtware.Config{
-		SigningKey: []byte(tokenKey),
-	})
+func JwtMiddleware(tokenKey string) func(*fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		headers := c.GetReqHeaders()
+		strToken := headers["Authorization"]
+		if strToken == "" {
+			return c.SendStatus(fiber.StatusForbidden)
+		}
+		splitToken := strings.Split(strToken, "Bearer ")
+		reqToken := splitToken[1]
+		t, err := jwt.Parse(reqToken, func(t *jwt.Token) (interface{}, error) {
+			return []byte(tokenKey), nil
+		})
+		if err != nil {
+			return fiber.NewError(fiber.StatusForbidden, "token invalido")
+		}
+		if t.Valid {
+			claims := t.Claims.(jwt.MapClaims)
+			role := claims["role"].(string)
+			if role != "ROLE_ADMIN" {
+				return fiber.NewError(fiber.StatusUnauthorized, "no tiene privilegios para ejecutar esta accion")
+			} else {
+				return c.Next()
+			}
+		} else if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+				return fiber.NewError(fiber.StatusForbidden, "token invalido")
+			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
+				return fiber.NewError(fiber.StatusUnauthorized, "token expirado")
+			} else {
+				return fiber.NewError(fiber.StatusForbidden, "token invalido")
+			}
+		}
+		return c.Next()
+	}
 }
 
 func SignToken(tokenKey string, user *user.UserResponse) string {
@@ -47,10 +76,7 @@ func SignToken(tokenKey string, user *user.UserResponse) string {
 	//return t
 }
 
-func ExtractUserIDFromJWT(bearer, tokenKey string) string {
-
-	token := bearer[7:]
-	logs.Info(token)
+func ExtractUserIDFromJWT(token, tokenKey string) string {
 	t, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(tokenKey), nil
 	})
