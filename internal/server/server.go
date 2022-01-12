@@ -43,7 +43,9 @@ func (s *Server) Initialize() {
 	routes.Put("/update/:id", s.carHandler.Update)
 	routes.Delete("/delete/:id", s.carHandler.Delete)
 
-	err := app.Listen(os.Getenv("PORT"))
+	port := os.Getenv("PORT")
+
+	err := app.Listen(":" + port)
 	if err != nil {
 		log.Fatal(err)
 	}
