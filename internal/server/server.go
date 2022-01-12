@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	recover2 "github.com/gofiber/fiber/v2/middleware/recover"
 	"log"
+	"os"
 )
 
 type Server struct {
@@ -42,7 +43,7 @@ func (s *Server) Initialize() {
 	routes.Put("/update/:id", s.carHandler.Update)
 	routes.Delete("/delete/:id", s.carHandler.Delete)
 
-	err := app.Listen(":8080")
+	err := app.Listen(os.Getenv("PORT"))
 	if err != nil {
 		log.Fatal(err)
 	}
