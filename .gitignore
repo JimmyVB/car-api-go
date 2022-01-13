@@ -42,3 +42,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+//build Golang VS Code
+car-api
+car-api.exe
+car-api.exe~

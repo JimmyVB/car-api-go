@@ -1,0 +1,6 @@
+go.mod
+go.sum
+docs/
+car-api
+car-api.exe
+car-api.exe~

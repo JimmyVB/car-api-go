@@ -1,9 +1,13 @@
 package handler
 
 import (
-	user "car-api/internal/core/domain"
+	"car-api/internal/core/domain"
+	enums "car-api/internal/core/emuns"
+	"fmt"
+
 	"car-api/internal/core/ports"
 	"car-api/internal/middleware"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -27,11 +31,13 @@ func NewUserHandler(userService ports.IUserService) *UserHandler {
 // @Accept json
 // @Produce json
 // @Param request body domain.User true "User Data"
-// @Success 200 {string} status "ok"
-// @Router /v1/login [post]
+// @Success 200 {object} domain.Message
+// @Success 400 {object} domain.MessageError
+// @Success 500 {object} domain.MessageError
+// @Router /login [post]
 func (h *UserHandler) Login(c *fiber.Ctx) error {
 
-	var user user.User
+	var user domain.User
 	err := c.BodyParser(&user)
 
 	if err != nil {
@@ -45,10 +51,9 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 
 	token := middleware.SignToken(h.tokenKey, newUser)
 
-	return c.JSON(fiber.Map{
-		"error":        false,
-		"msg":          nil,
-		"access_token": token,
+	return c.JSON(domain.Message{
+		Message: fmt.Sprintf("%s %s %s", enums.Logged, enums.Successfully, enums.User),
+		Data:    token,
 	})
 
 }
@@ -60,12 +65,17 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param request body domain.User true "Create User Data"
-// @Success 200 {string} status "ok"
-// @Router /v1/register [post]
+// @Success 200 {object} domain.Message
+// @Success 400 {object} domain.MessageError
+// @Success 500 {object} domain.MessageError
+// @Router /register [post]
 func (h *UserHandler) SaveUser(c *fiber.Ctx) error {
 
-	var user user.User
+	var user domain.User
 	err := c.BodyParser(&user)
+	if err != nil {
+		return fiber.NewError(400, "cannot parse params")
+	}
 
 	res, err := h.userService.SaveUser(user)
 
@@ -75,5 +85,8 @@ func (h *UserHandler) SaveUser(c *fiber.Ctx) error {
 
 	res.JWT = middleware.SignToken(h.tokenKey, res)
 
-	return c.JSON(res)
+	return c.JSON(domain.Message{
+		Message: fmt.Sprintf("%s %s %s", enums.Created, enums.Successfully, enums.User),
+		Data:    res.JWT,
+	})
 }
