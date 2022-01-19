@@ -4,8 +4,9 @@ import (
 	"car-api/internal/core/domain"
 	enums "car-api/internal/core/emuns"
 	"car-api/internal/core/ports"
+	"car-api/internal/kafka"
+	"encoding/json"
 	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -36,7 +37,9 @@ func (ch *CarHandler) Save(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(404, "cannot create a car")
 	}
-
+	carEvent := kafka.CarEvent{Operation: "create"}
+	eventInBytes, err := json.Marshal(carEvent)
+	kafka.PushMessageToQueue(eventInBytes)
 	return c.JSON(domain.Message{
 		Message: fmt.Sprintf("%s %s %s", enums.Created, enums.Successfully, enums.Car),
 	})
@@ -128,7 +131,9 @@ func (ch *CarHandler) Update(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(400, "cannot update a car")
 	}
-
+	carEvent := kafka.CarEvent{Operation: "update"}
+	eventInBytes, err := json.Marshal(carEvent)
+	kafka.PushMessageToQueue(eventInBytes)
 	return c.JSON(domain.Message{
 		Message: fmt.Sprintf("%s %s %s", enums.Updated, enums.Successfully, enums.Car),
 	})
@@ -157,7 +162,9 @@ func (ch *CarHandler) Delete(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(400, "cannot delete car")
 	}
-
+	carEvent := kafka.CarEvent{Operation: "delete"}
+	eventInBytes, err := json.Marshal(carEvent)
+	kafka.PushMessageToQueue(eventInBytes)
 	return c.JSON(domain.Message{
 		Message: fmt.Sprintf("%s %s %s", enums.Deleted, enums.Successfully, enums.Car),
 	})
