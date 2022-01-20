@@ -48,3 +48,18 @@ CREATE TABLE public.cars
     price int NULL,
     CONSTRAINT cars_pk PRIMARY KEY (id)
 )
+
+create table car_operations_report
+(
+    id          serial
+        constraint car_operations_report_pk
+            primary key,
+    createdcars integer,
+    updatedcars integer,
+    deletedcars integer
+);
+
+create unique index car_operations_report_id_uindex
+    on car_operations_report (id);
+
+
