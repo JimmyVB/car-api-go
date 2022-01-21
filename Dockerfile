@@ -15,6 +15,8 @@ ENV PORT=8080 \
 
 RUN go mod init car-api
 
+RUN go mod tidy
+
 RUN go get -u github.com/swaggo/swag/cmd/swag@v1.7.0
 
 COPY . .
