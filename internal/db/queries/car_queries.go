@@ -19,3 +19,11 @@ func Update() string {
 func Delete() string {
 	return "delete from cars where id = $1"
 }
+
+func GetCarStatus() string {
+	return "select id, idcar, iduser, startdate, enddate  from car_rentals where idcar = $1"
+}
+
+func RentCar() string {
+	return "insert into car_rentals (idcar, iduser, startdate, enddate) values ($1, $2, $3, $4)"
+}

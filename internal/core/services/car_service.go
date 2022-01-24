@@ -56,4 +56,12 @@ func (c *CarService) Delete(id string) error {
 	return nil
 }
 
+func (c *CarService) RentCar(carRent *user.CarRent) (*user.CarRent, error) {
+	res, err := c.carRepostiory.RentCar(carRent)
+	if err != nil {
+		return nil, fiber.NewError(500, "cannot rent car")
+	}
+	return res, nil
+}
+
 var _ ports.ICarService = (*CarService)(nil)

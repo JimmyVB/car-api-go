@@ -13,6 +13,7 @@ type ICarService interface {
 	GetOne(id string) (user.Car, error)
 	Update(id string, car user.Car) error
 	Delete(id string) error
+	RentCar(carRent *user.CarRent) (*user.CarRent, error)
 }
 
 type ICarRepository interface {
@@ -21,6 +22,7 @@ type ICarRepository interface {
 	GetOne(id string) (user.Car, error)
 	Update(id string, car user.Car) error
 	Delete(id string) error
+	RentCar(carRent *user.CarRent) (*user.CarRent, error)
 }
 
 type ICarHandler interface {
