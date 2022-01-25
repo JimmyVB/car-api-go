@@ -88,3 +88,32 @@ func (us *CarRepository) Delete(id string) error {
 	}
 	return nil
 }
+
+func (us *CarRepository) RentCar(carRent *user.CarRent) (*user.CarRent, error) {
+	finalCarRent := user.CarRent{IdUser: 0, IdCar: 0}
+	err := us.db.QueryRow(queries.GetCarStatus(), carRent.IdCar).Scan(&finalCarRent.ID, &finalCarRent.IdCar, &finalCarRent.IdUser, &finalCarRent.StartDate, &finalCarRent.EndDate)
+
+	if err != nil {
+		logs.Error(err.Error())
+	}
+
+	startYear := finalCarRent.StartDate.Year()
+	endYear := finalCarRent.EndDate.Year()
+	validRent := true
+	if startYear != 1 && endYear != 1 &&
+		((finalCarRent.StartDate.Before(carRent.StartDate) && finalCarRent.EndDate.After(carRent.EndDate)) ||
+			(finalCarRent.StartDate.After(carRent.StartDate) && finalCarRent.StartDate.Before(carRent.EndDate)) ||
+			(finalCarRent.EndDate.After(carRent.StartDate) && finalCarRent.EndDate.Before(carRent.EndDate))) {
+		validRent = false
+	}
+
+	if validRent == true {
+		_, err := us.db.Exec(queries.RentCar(), carRent.IdCar, carRent.IdUser, carRent.StartDate, carRent.EndDate)
+		if err != nil {
+			logs.Error(err.Error())
+			return nil, err
+		}
+		return carRent, nil
+	}
+	return nil, nil
+}
